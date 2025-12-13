@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="This is my first Django Template" />
+        <meta name="keywords" content="Django, Template, HTML" />
+        <title>Advanced Search</title>
+    </head>
+    <body>
+        <h1>
+            進階搜尋
+        </h1>
+
+        <form method="get" action="">
+            <div>
+                <label for="q">
+                    關鍵字:
+                </label>
+                <input type="text" id="q" name="q" value="{{ keyword }}" />
+            </div>
+
+            <div>
+                <label for="category">
+                    分類:
+                </label>
+                <select id="category" name="category">
+                    <option value="all" {% if category == "all" %}selected{% endif %}>
+                        全部
+                    </option>
+                    <option value="electronics"
+                            {% if category == "electronics" %}selected{% endif %}>
+                        電子產品
+                    </option>
+                    <option value="books" {% if category == "books" %}selected{% endif %}>
+                        書籍
+                    </option>
+                    <option value="clothing" {% if category == "clothing" %}selected{% endif %}>
+                        服飾
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label for="sort">
+                    排序:
+                </label>
+                <select id="sort" name="sort">
+                    <option value="newest" {% if sort == "newest" %}selected{% endif %}>
+                        最新
+                    </option>
+                    <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>
+                        價格低到高
+                    </option>
+                    <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>
+                        價格高到低
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit">
+                搜尋
+            </button>
+        </form>
+
+        {% if keyword %}
+            <h2>
+                搜尋結果
+            </h2>
+            <p>
+                關鍵字: {{ keyword }}
+            </p>
+            <p>
+                分類: {{ category }}
+            </p>
+            <p>
+                排序: {{ sort }}
+            </p>
+        {% endif %}
+    </body>
+</html>

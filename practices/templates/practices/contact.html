@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="This is my first Django Template" />
+        <meta name="keywords" content="Django, Template, HTML" />
+        <title>Contact</title>
+    </head>
+    <body>
+        <h1>
+            聯絡我們
+        </h1>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div>
+                <label for="name">
+                    姓名:
+                </label>
+                <input type="text" id="name" name="name" required />
+            </div>
+            <div>
+                <label for="email">
+                    Email:
+                </label>
+                <input type="email" id="email" name="email" required />
+            </div>
+            <div>
+                <label for="message">
+                    訊息:
+                </label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit">
+                送出
+            </button>
+        </form>
+
+        {% if success %}
+            <div>
+                <h2>
+                    感謝您的訊息！
+                </h2>
+                <p>
+                    姓名: {{ name }}
+                </p>
+                <p>
+                    Email: {{ email }}
+                </p>
+                <p>
+                    訊息: {{ message }}
+                </p>
+            </div>
+        {% endif %}
+    </body>
+</html>

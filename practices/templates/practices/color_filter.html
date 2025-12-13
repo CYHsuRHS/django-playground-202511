@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="This is my first Django Template" />
+        <meta name="keywords" content="Django, Template, HTML" />
+        <title>Color Filter</title>
+    </head>
+    <body>
+        <h1>
+            顏色篩選
+        </h1>
+
+        <form method="get" action="">
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="color"
+                           value="red"
+                           {% if "red" in colors %}checked{% endif %} />
+                    紅色
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="color"
+                           value="blue"
+                           {% if "blue" in colors %}checked{% endif %} />
+                    藍色
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="color"
+                           value="green"
+                           {% if "green" in colors %}checked{% endif %} />
+                    綠色
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox"
+                           name="color"
+                           value="yellow"
+                           {% if "yellow" in colors %}checked{% endif %} />
+                    黃色
+                </label>
+            </div>
+            <button type="submit">
+                篩選
+            </button>
+        </form>
+
+        {% if colors %}
+            <h2>
+                篩選結果
+            </h2>
+            <p>
+                選擇的顏色: {{ colors|join:", " }}
+            </p>
+        {% endif %}
+    </body>
+</html>
