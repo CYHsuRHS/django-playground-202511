@@ -16,6 +16,7 @@ check = [
 ]
 dev = [
     "ipython>=9.7.0",
+    "werkzeug>=3.1.5",
 ]
 
 [tool.uv]
