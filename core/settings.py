@@ -56,8 +56,10 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
+        "DIRS": [  # 放的是專案級別的東西
+            BASE_DIR / "templates",  # BASE_DIR表當前這個專案的資料夾
+        ],
+        "APP_DIRS": True,  # APP_DIRS = True表會去App底下的templates資料夾找
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",

@@ -1,0 +1,24 @@
+{% extends "base.html" %}<!-- extends "base.html"表繼承base.html -->
+
+{% block title %}
+    <!-- block title區塊表title會被替換為下方內容 -->
+    文章列表 - Django 大冒險
+{% endblock title %}
+
+{% block content %}
+    <h2>
+        文章列表
+    </h2>
+    <ul>
+        {% for article in articles %}
+            <li>
+                {{ article.title }} - {{ article.author.name }}
+            </li>
+        {% empty %}
+            <!-- empty區塊當articles沒有資料時會顯示目前沒有文章，有資料就不會執行empty區塊 -->
+            <li>
+                目前沒有文章
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
