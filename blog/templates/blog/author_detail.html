@@ -9,7 +9,7 @@
     <nav aria-label="breadcrumb" class="d-none d-md-block">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'author_list' %}">作者列表</a>
+                <a href="{% url 'blog:author_list' %}">作者列表</a>
             </li>
             <li class="breadcrumb-item active">
                 {{ author.name }}
@@ -35,7 +35,7 @@
                 發表的文章
             </h3>
             {% for article in author.articles.all %}
-                <a href="{% url 'article_detail' article.id %}"
+                <a href="{% url 'blog:article_detail' article.id %}"
                    class="text-decoration-none">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">
@@ -58,7 +58,7 @@
 
         <div class="card-footer bg-light">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="{% url 'author_list' %}"
+                <a href="{% url 'blog:author_list' %}"
                    class="btn btn-outline-secondary btn-sm">
                     <span class="d-none d-sm-inline">
                         <i class="bi bi-arrow-left"></i> 返回列表

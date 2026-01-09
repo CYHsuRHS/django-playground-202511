@@ -21,7 +21,7 @@
             所以Django為了避免這個狀況，使用建立url時取的name來產生url
             url 'article_detail' article.id 表請根據article_detail這個名字去產生url，並使用article.id給參數，因為組成url需要<int:article_id>
                 {% endcomment %}
-                <a href="{% url 'article_detail' article.id %}"
+                <a href="{% url 'blog:article_detail' article.id %}"
                    class="btn btn-primary btn-sm">
                     閱讀更多
                 </a>
