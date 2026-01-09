@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Bootstrap Grid 系統展示" />
+    <meta name="keywords" content="Bootstrap, Grid, RWD" />
+    <title>Bootstrap Grid 系統展示</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+    <style>
+      .demo-box {
+        background-color: #0d6efd;
+        color: white;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .demo-box-secondary {
+        background-color: #6c757d;
+      }
+      .demo-box-success {
+        background-color: #198754;
+      }
+      .demo-box-warning {
+        background-color: #ffc107;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-5">
+      <h1 class="text-center mb-5">
+        Bootstrap Grid 系統展示
+      </h1>
+      <p class="text-center text-muted mb-4">
+        試著調整瀏覽器視窗大小，觀察欄位如何自動調整！
+      </p>
+
+      <!-- 範例 1: 相同寬度 -->
+      <h2 class="mb-3">
+        範例 1: 自動平分欄位
+      </h2>
+      <div class="row mb-5">
+        <div class="col">
+          <div class="demo-box">
+            欄位 1
+          </div>
+        </div>
+        <div class="col">
+          <div class="demo-box demo-box-secondary">
+            欄位 2
+          </div>
+        </div>
+        <div class="col">
+          <div class="demo-box demo-box-success">
+            欄位 3
+          </div>
+        </div>
+      </div>
+
+      <!-- 範例 2: 固定欄位寬度 -->
+      <h2 class="mb-3">
+        範例 2: 主內容 + 側邊欄 (8:4)
+      </h2>
+      <div class="row mb-5">
+        <div class="col-8">
+          <div class="demo-box">
+            主要內容 (8/12)
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="demo-box demo-box-secondary">
+            側邊欄 (4/12)
+          </div>
+        </div>
+      </div>
+
+      <!-- 範例 3: 響應式欄位 -->
+      <h2 class="mb-3">
+        範例 3: 響應式卡片網格
+      </h2>
+      <p class="text-muted">
+        手機: 1 欄 | 平板: 2 欄 | 桌機: 4 欄
+      </p>
+      <div class="row mb-5">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="demo-box">
+            卡片 1
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="demo-box demo-box-secondary">
+            卡片 2
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="demo-box demo-box-success">
+            卡片 3
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="demo-box demo-box-warning">
+            卡片 4
+          </div>
+        </div>
+      </div>
+
+      <!-- 範例 4: 文章卡片佈局 -->
+      <h2 class="mb-3">
+        範例 4: 文章列表佈局
+      </h2>
+      <p class="text-muted">
+        手機: 1 欄 | 小螢幕: 2 欄 | 桌機: 3 欄 | 大螨幕: 4 欄
+      </p>
+      <div class="row mb-5">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                文章標題 1
+              </h5>
+              <p class="card-text">
+                這是文章的簡短描述內容...
+              </p>
+              <a href="#" class="btn btn-primary btn-sm">閱讀更多</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                文章標題 2
+              </h5>
+              <p class="card-text">
+                這是文章的簡短描述內容...
+              </p>
+              <a href="#" class="btn btn-primary btn-sm">閱讀更多</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                文章標題 3
+              </h5>
+              <p class="card-text">
+                這是文章的簡短描述內容...
+              </p>
+              <a href="#" class="btn btn-primary btn-sm">閱讀更多</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                文章標題 4
+              </h5>
+              <p class="card-text">
+                這是文章的簡短描述內容...
+              </p>
+              <a href="#" class="btn btn-primary btn-sm">閱讀更多</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 目前螢幕尺寸指示器 -->
+      <div class="alert alert-info text-center">
+        <strong>目前螢幕尺寸：</strong>
+        <span class="d-inline d-sm-none">Extra Small (&lt;576px)</span>
+        <span class="d-none d-sm-inline d-md-none">Small (≥576px)</span>
+        <span class="d-none d-md-inline d-lg-none">Medium (≥768px)</span>
+        <span class="d-none d-lg-inline d-xl-none">Large (≥992px)</span>
+        <span class="d-none d-xl-inline d-xxl-none">Extra Large (≥1200px)</span>
+        <span class="d-none d-xxl-inline">Extra Extra Large (≥1400px)</span>
+      </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

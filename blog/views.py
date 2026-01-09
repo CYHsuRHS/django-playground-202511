@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from blog.models import Article
+from blog.models import Article, Author, Tag
 
 
 # article_list(request)表示是一個function view
@@ -15,3 +15,18 @@ def article_list(request):
 def article_detail(request, article_id):
     article = Article.objects.get(id=article_id)
     return render(request, "blog/article_detail.html", {"article": article})
+
+
+def author_list(request):
+    authors = Author.objects.all()
+    return render(request, "blog/author_list.html", {"authors": authors})
+
+
+def author_detail(request, author_id):
+    author = Author.objects.get(id=author_id)
+    return render(request, "blog/author_detail.html", {"author": author})
+
+
+def tag_list(request):
+    tags = Tag.objects.all()
+    return render(request, "blog/tag_list.html", {"tags": tags})

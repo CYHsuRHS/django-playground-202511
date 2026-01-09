@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+
+{% block title %}
+    作者列表 - Django 大冒險
+{% endblock title %}
+
+{% block blog_content %}
+    <h2 class="mb-4">
+        作者列表
+    </h2>
+    <div class="row">
+        {% for author in authors %}
+            {% include "blog/components/author_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    目前沒有作者
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock blog_content %}
