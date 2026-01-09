@@ -1,23 +1,61 @@
-{% extends "base.html" %}
+{% extends "blog/base.html" %}
 
 {% comment %} {{ block.super }}根據父層block title區塊內容顯示，父層也就是"base.html" {% endcomment %}
 {% block title %}
     {{ article.title }} - {{ block.super }}
 {% endblock title %}
 
-{% block content %}
-    <article>
-        <h2>
-            {{ article.title }}
-        </h2>
-        <p>
-            作者：{{ article.author.name }}
-        </p>
-        <p>
-            發布時間：{{ article.created_at }}
-        </p>
-        <div>
-            {{ article.content }}
+{% block blog_content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'article_list' %}">文章列表</a>
+            </li>
+            <li class="breadcrumb-item active">
+                {{ article.title }}
+            </li>
+        </ol>
+    </nav>
+
+    <article class="card">
+        <div class="card-body">
+            <h1 class="card-title">
+                {{ article.title }}
+            </h1>
+
+            <div class="d-flex align-items-center mb-3 text-muted">
+                <span class="me-3">
+                    <i class="bi bi-person"></i>
+                    作者：{{ article.author.name }}
+                </span>
+                <span>
+                    <i class="bi bi-calendar"></i>
+                    發布時間：{{ article.created_at|date:"Y-m-d H:i" }}
+                </span>
+            </div>
+            {% comment %} 判斷是否存在tags決定是否渲染
+            在python的語法需要加上括號article.tags.exists()，但Django語法不允許括號，他自己會判斷，所以不需要加上括號
+            {% endcomment %}
+            {% if article.tags.exists %}
+
+                <div class="mb-3">
+                    {% for tag in article.tags.all %}
+                        <span class="badge bg-secondary me-1">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <hr />
+
+            <div class="article-content">
+                {{ article.content|linebreaks }}
+            </div>
+        </div>
+
+        <div class="card-footer bg-light">
+            <a href="{% url 'article_list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> 返回列表
+            </a>
         </div>
     </article>
-{% endblock content %}
+{% endblock blog_content %}

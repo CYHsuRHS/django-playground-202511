@@ -1,3 +1,5 @@
+{% load django_bootstrap5 %}
+{% comment %} 加入django_bootstrap5 {% endcomment %}
 <!DOCTYPE html>
 <html lang="zh-Hant">
     <head>
@@ -11,33 +13,53 @@
                 Django 大冒險
             {% endblock title %}
         </title>
+        {% comment %} 將bootstrap用的css link進來 {% endcomment %}
+        {% bootstrap_css %}
+        {% comment %} 將bootstrap用的icon css link進來 {% endcomment %}
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
 
         {% block extra_head %}
         {% endblock extra_head %}
     </head>
     <body>
-        <header>
-            <nav>
-                <h1>
-                    Django 大冒險
-                </h1>
-            </nav>
-        </header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            {% comment %} bootstrap習慣會使用container {% endcomment %}
+            <div class="container">
+                <span class="navbar-brand">Django 大冒險</span>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'article_list' %}">文章列表</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">管理後台</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-        <main>
-            {% comment %} block content區塊表若子html沒有block content區塊，則子html會顯示下方內容 {% endcomment %}
+        <main class="container my-4">
             {% block content %}
-                <p>
-                    歡迎來到 Django 大冒險！
-                </p>
             {% endblock content %}
         </main>
 
-        <footer>
-            <p>
-                Django Playground
-            </p>
+        <footer class="bg-light py-4 mt-5">
+            <div class="container text-center">
+                <p class="text-muted mb-0">
+                    Django Playground
+                </p>
+            </div>
         </footer>
+        {% comment %} 引入bootstrap_javascript {% endcomment %}
+        {% bootstrap_javascript %}
 
         {% block extra_scripts %}
         {% endblock extra_scripts %}

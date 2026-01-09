@@ -7,10 +7,10 @@
 {% endblock title %}
 
 {% block blog_content %}
-    <h2>
+    <h2 class="mb-4">
         文章列表
     </h2>
-    <div class="article-grid">
+    <div class="row">
         {% comment %} empty區塊當articles沒有資料時會顯示目前沒有文章，有資料就不會執行empty區塊
         article_list.html與include共用同一個article命名空間
         但article改為article12時，就需要使用with將article12傳入include
@@ -19,9 +19,11 @@
         {% for article12 in articles %}
             {% include "blog/components/article_card.html" with article=article12 %}
         {% empty %}
-            <li>
-                目前沒有文章
-            </li>
+            <div class="col-12">
+                <div class="alert alert-info">
+                    目前沒有文章
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock blog_content %}
