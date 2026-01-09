@@ -10,16 +10,18 @@
     <h2>
         文章列表
     </h2>
-    <ul>
-        {% comment %} empty區塊當articles沒有資料時會顯示目前沒有文章，有資料就不會執行empty區塊 {% endcomment %}
-        {% for article in articles %}
-            <li>
-                {{ article.title }} - {{ article.author.name }}
-            </li>
+    <div class="article-grid">
+        {% comment %} empty區塊當articles沒有資料時會顯示目前沒有文章，有資料就不會執行empty區塊
+        article_list.html與include共用同一個article命名空間
+        但article改為article12時，就需要使用with將article12傳入include
+        但通常會使用裡外變數一致的方式，不得已才使用with傳入參數的方式
+        {% endcomment %}
+        {% for article12 in articles %}
+            {% include "blog/components/article_card.html" with article=article12 %}
         {% empty %}
             <li>
                 目前沒有文章
             </li>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock content %}

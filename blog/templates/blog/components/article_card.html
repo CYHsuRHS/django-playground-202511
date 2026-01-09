@@ -1,0 +1,17 @@
+<div class="article-card">
+    <h3>
+        {{ article.title }}
+    </h3>
+    <p>
+        {{ article.author.name }} | {{ article.created_at }}
+    </p>
+    <p>
+        <!-- truncatewords官方提供的方法，當內容超過一定長度會截斷 -->
+        {{ article.content|truncatewords:30 }}
+    </p>
+    {% comment %} <a href="/blog/articles/{{article.id}}">閱讀更多</a> 但url修改了就會錯了
+    所以Django為了避免這個狀況，使用建立url時取的name來產生url
+    url 'article_detail' article.id 表請根據article_detail這個名字去產生url，並使用article.id給參數，因為組成url需要<int:article_id>
+    {% endcomment %}
+    <a href="{% url 'article_detail' article.id %}">閱讀更多</a>
+</div>
