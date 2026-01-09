@@ -1,12 +1,12 @@
-{% extends "base.html" %}
-{% comment %} extends "base.html"表繼承base.html {% endcomment %}
+{% extends "blog/base.html" %}
+{% comment %} extends "blog/base.html"表繼承blog/base.html {% endcomment %}
 
 {% comment %} block title區塊表title會被替換為下方內容 {% endcomment %}
 {% block title %}
     文章列表 - Django 大冒險
 {% endblock title %}
 
-{% block content %}
+{% block blog_content %}
     <h2>
         文章列表
     </h2>
@@ -24,4 +24,4 @@
             </li>
         {% endfor %}
     </div>
-{% endblock content %}
+{% endblock blog_content %}

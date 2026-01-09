@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% comment %} extends "base.html"表繼承上一層的base.html {% endcomment %}
+{% block content %}
+    <div class="blog-container">
+        <aside class="sidebar">
+            <h3>
+                文章管理
+            </h3>
+            <ul>
+                <li>
+                    <a href="{% url 'article_list' %}">文章列表</a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            {% block blog_content %}
+            {% endblock blog_content %}
+        </div>
+    </div>
+{% endblock content %}
