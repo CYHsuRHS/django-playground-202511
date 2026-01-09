@@ -9,3 +9,9 @@ def article_list(request):
     return render(
         request, "blog/article_list.html", {"articles": articles}
     )  # 透過render function將articles變數丟到"articles" template裡面，要渲染的畫面是"blog/article_list.html"，並且挾帶articles變數到"articles" template裡
+
+
+# 用path傳進來的article_id去尋找該篇文章存不存在
+def article_detail(request, article_id):
+    article = Article.objects.get(id=article_id)
+    return render(request, "blog/article_detail.html", {"article": article})

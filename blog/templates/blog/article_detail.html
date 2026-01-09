@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% comment %} {{ block.super }}根據父層block title區塊內容顯示，父層也就是"base.html" {% endcomment %}
+{% block title %}
+    {{ article.title }} - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <article>
+        <h2>
+            {{ article.title }}
+        </h2>
+        <p>
+            作者：{{ article.author.name }}
+        </p>
+        <p>
+            發布時間：{{ article.created_at }}
+        </p>
+        <div>
+            {{ article.content }}
+        </div>
+    </article>
+{% endblock content %}

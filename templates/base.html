@@ -25,7 +25,11 @@
         </header>
 
         <main>
+            {% comment %} block content區塊表若子html沒有block content區塊，則子html會顯示下方內容 {% endcomment %}
             {% block content %}
+                <p>
+                    歡迎來到 Django 大冒險！
+                </p>
             {% endblock content %}
         </main>
 
