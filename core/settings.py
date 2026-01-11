@@ -27,6 +27,9 @@ DEBUG = True
 # DEBUG = False時，ALLOWED_HOSTS一定要設定亦可粗暴設定ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -46,6 +49,10 @@ INSTALLED_APPS = [
     "blog",
 ]
 
+if DEBUG:
+    # 佈署時不會安裝
+    INSTALLED_APPS += ["debug_toolbar"]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -55,6 +62,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    # 盡可能讓DebugToolbarMiddleware在最前面
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware", *MIDDLEWARE]
 
 ROOT_URLCONF = "core.urls"
 

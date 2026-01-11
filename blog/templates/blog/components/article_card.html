@@ -7,6 +7,13 @@
             <h6 class="card-subtitle mb-2 text-muted">
                 {{ article.author.name }}
             </h6>
+            {% if article.tags.exists %}
+                <div class="mb-2">
+                    {% for tag in article.tags.all %}
+                        <span class="badge bg-secondary me-1">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <p class="card-text flex-grow-1">
                 <!-- truncatewords官方提供的方法，當內容超過一定長度會截斷 -->
                 {{ article.content|truncatewords:30 }}
