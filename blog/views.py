@@ -6,7 +6,9 @@ from blog.models import Article, Author, Tag
 
 # article_list(request)表示是一個function view
 def article_list(request):
-    articles = Article.objects.all()  # 把Article這張表的所有物件撈出來放在articles變數
+    # articles = Article.objects.all()  # 把Article這張表的所有物件撈出來放在articles變數
+    # 修正N+1查詢問題使用select_related，其參數是要載入的關聯欄位名稱，使用SQL LEFT JOIN的技巧，同時把有作者的資料一起撈回來
+    articles = Article.objects.select_related("author").all()
     return render(
         request, "blog/article_list.html", {"articles": articles}
     )  # 透過render function將articles變數丟到"articles" template裡面，要渲染的畫面是"blog/article_list.html"，並且挾帶articles變數到"articles" template裡
@@ -41,5 +43,7 @@ def author_detail(request, author_id):
 
 
 def tag_list(request):
-    tags = Tag.objects.all()
+    # tags = Tag.objects.all()
+    # tags修正N+1查詢問題不可使用select_related，因關聯的方式不一樣
+    tags = Tag.objects.prefetch_related("articles").all()
     return render(request, "blog/tag_list.html", {"tags": tags})

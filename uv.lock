@@ -117,6 +117,7 @@ check = [
     { name = "djlint" },
 ]
 dev = [
+    { name = "django-extensions" },
     { name = "ipython" },
     { name = "werkzeug" },
 ]
@@ -131,6 +132,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 check = [{ name = "djlint", specifier = ">=1.36.4" }]
 dev = [
+    { name = "django-extensions", specifier = ">=4.1" },
     { name = "ipython", specifier = ">=9.7.0" },
     { name = "werkzeug", specifier = ">=3.1.5" },
 ]
