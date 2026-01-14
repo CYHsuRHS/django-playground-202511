@@ -34,6 +34,7 @@ def article_detail(request, article_id):
         Article.objects.select_related("author").prefetch_related("tags"),
         id=article_id,
     )
+    print(article)  # 可用於debug，print結果會顯示於PowerShell
     return render(request, "blog/article_detail.html", {"article": article})
 
 
@@ -46,6 +47,17 @@ def article_create(request):
         return redirect("blog:article_detail", article_id=article.id)
     # 若驗證不合法就直接render畫面
     return render(request, "blog/article_create.html", {"form": form})
+
+
+def article_edit(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    # 使用者按下save時，並非建立全新的物件，而是更新instance
+    form = ArticleForm(request.POST or None, instance=article)
+    if form.is_valid():
+        article = form.save()
+        return redirect("blog:article_detail", article_id=article.id)
+
+    return render(request, "blog/article_edit.html", {"form": form, "article": article})
 
 
 def author_list(request):

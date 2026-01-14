@@ -54,15 +54,18 @@
 
         <div class="card-footer bg-light">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="{% url 'blog:article_list' %}"
-                   class="btn btn-outline-secondary btn-sm">
-                    <span class="d-none d-sm-inline">
-                        <i class="bi bi-arrow-left"></i> 返回列表
-                    </span>
-                    <span class="d-inline d-sm-none">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'blog:article_list' %}"
+                       class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-arrow-left"></i>
-                    </span>
-                </a>
+                        <span class="d-none d-sm-inline">返回列表</span>
+                    </a>
+                    <a href="{% url 'blog:article_edit' article_id=article.id %}"
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i>
+                        <span class="d-none d-sm-inline">編輯</span>
+                    </a>
+                </div>
                 <small class="text-muted d-none d-md-inline">
                     最後更新：{{ article.updated_at|date:"Y-m-d" }}
                 </small>
