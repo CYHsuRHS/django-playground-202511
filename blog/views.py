@@ -38,21 +38,14 @@ def article_detail(request, article_id):
 
 
 def article_create(request):
-    if request.method == "POST":
-        form = ArticleForm(request.POST)  # ArticleForm要驗證request.POST的資料
-        if form.is_valid():
-            article = form.save()
-            return redirect("blog:article_detail", article_id=article.id)
-    else:
-        form = ArticleForm()  # 空表單
-
-    return render(
-        request,
-        "blog/article_create.html",
-        {
-            "form": form,  # 改丟form這個表單到前端
-        },
-    )
+    # request.POST如果有的話，就產生一個以request.POST為資料需要被驗證的表單，否則給一個None表完全乾淨的表單如同request.GET來建立一個form
+    form = ArticleForm(request.POST or None)
+    # 若驗證合法就直接存起來
+    if form.is_valid():
+        article = form.save()
+        return redirect("blog:article_detail", article_id=article.id)
+    # 若驗證不合法就直接render畫面
+    return render(request, "blog/article_create.html", {"form": form})
 
 
 def author_list(request):

@@ -26,3 +26,12 @@ class ArticleForm(forms.ModelForm):
         widgets = {
             "content": forms.Textarea(attrs={"rows": 10}),
         }
+
+    # 自訂驗證邏輯，可以覆寫 clean_<field_name> 方法
+    def clean_title(self):
+        title = self.cleaned_data["title"]
+        if "測試" in title:
+            error_message = "標題不能包含「測試」"
+            raise forms.ValidationError(error_message)
+
+        return title

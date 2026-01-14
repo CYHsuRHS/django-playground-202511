@@ -7,9 +7,14 @@
 {% endblock title %}
 
 {% block blog_content %}
-    <h2 class="mb-4">
-        文章列表
-    </h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            文章列表
+        </h2>
+        <a href="{% url 'blog:article_create' %}" class="btn btn-primary">
+            建立文章
+        </a>
+    </div>
     <div class="row">
         {% comment %} empty區塊當articles沒有資料時會顯示目前沒有文章，有資料就不會執行empty區塊
         article_list.html與include共用同一個article命名空間
