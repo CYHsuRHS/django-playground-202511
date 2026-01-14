@@ -1,0 +1,23 @@
+{% load django_bootstrap5 %}
+
+{% bootstrap_form_errors form type='non_fields' %}
+
+<form method="post">
+    {% csrf_token %}
+
+    {% bootstrap_field form.title addon_before='<i class="bi bi-pencil"></i>' placeholder="請輸入標題..." %}
+
+    {% bootstrap_field form.content addon_before='<i class="bi bi-file-text"></i>' rows=10 %}
+
+    {% bootstrap_field form.author addon_before='<i class="bi bi-person"></i>' %}
+
+    <div class="d-flex gap-2 mt-3">
+        {% bootstrap_button button_type="submit" content=submit_text %}
+
+        {% if show_reset %}
+            {% bootstrap_button button_type="reset" content="清除內容" button_class="btn-info" %}
+        {% endif %}
+
+        {% bootstrap_button button_type="link" href=cancel_url content="取消" button_class="btn-secondary" %}
+    </div>
+</form>

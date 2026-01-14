@@ -1,7 +1,5 @@
 {% extends "blog/base.html" %}
 
-{% load django_bootstrap5 %}
-
 {% block title %}
     編輯文章：{{ article.title }} - Django 大冒險
 {% endblock title %}
@@ -27,24 +25,8 @@
                 編輯文章
             </h2>
 
-            {% bootstrap_form_errors form type='non_fields' %}
-
-            <form method="post">
-                {% csrf_token %}
-
-                {% bootstrap_field form.title addon_before='<i class="bi bi-pencil"></i>' placeholder="請輸入標題..." %}
-
-                {% bootstrap_field form.content addon_before='<i class="bi bi-file-text"></i>' rows=10 %}
-
-                {% bootstrap_field form.author addon_before='<i class="bi bi-person"></i>' %}
-
-                <div class="d-flex gap-2 mt-3">
-                    {% bootstrap_button button_type="submit" content="儲存變更" %}
-
-                    {% url 'blog:article_detail' article_id=article.id as cancel_url %}
-                    {% bootstrap_button button_type="link" href=cancel_url content="取消" button_class="btn-secondary" %}
-                </div>
-            </form>
+            {% url 'blog:article_detail' article_id=article.id as cancel_url %}
+            {% include "blog/components/article_form.html" with submit_text="儲存變更" show_reset=False %}
         </div>
     </div>
 {% endblock blog_content %}
