@@ -16,7 +16,11 @@
             <form method="post">
                 {% csrf_token %}
 
-                {% bootstrap_form form layout='horizontal' size='lg' %}
+                {% bootstrap_field form.title show_label=True placeholder="請輸入文章標題..." %}
+
+                {% bootstrap_field form.content rows=15 %}
+
+                {% bootstrap_field form.author show_label=False %}
 
                 <div class="d-flex gap-2 mt-3">
                     {% bootstrap_button button_type="submit" content="建立文章" %}
