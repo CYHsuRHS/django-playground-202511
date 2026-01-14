@@ -41,15 +41,7 @@ def article_create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST)  # ArticleForm要驗證request.POST的資料
         if form.is_valid():
-            # article = Article.objects.create(**request.POST) # 這樣寫非常危險
-            # article = Article.objects.create(**form.cleaned_data)  # 這樣寫可以，用cleaned_data會把多餘的欄位濾掉
-            article = Article.objects.create(
-                # cleaned_data表已清洗的乾淨資料
-                title=form.cleaned_data["title"],
-                content=form.cleaned_data["content"],
-                # or None表將空字串轉成 None，假設form.cleaned_data["author"]是空字串就會塞None
-                author_id=form.cleaned_data["author"] or None,
-            )
+            article = form.save()
             return redirect("blog:article_detail", article_id=article.id)
     else:
         form = ArticleForm()  # 空表單
