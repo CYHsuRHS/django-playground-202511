@@ -9,13 +9,24 @@ from blog.models import Article, Author, Tag
 
 # article_list(request)表示是一個function view
 def article_list(request):
-    # articles = Article.objects.all()  # 把Article這張表的所有物件撈出來放在articles變數
-    # 修正作者N+1查詢問題使用select_related，其參數是要載入的關聯欄位名稱，使用SQL LEFT JOIN的技巧，同時把有作者的資料一起撈回來
-    # articles = Article.objects.select_related("author").all()
-    # 修正標籤N+1查詢問題使用prefetch_related，因關聯方式不同author與tags是多對多
+    # 從 GET 參數取得篩選條件
+    search = request.GET.get("search", "")
+    author_id = request.GET.get("author", "")
+
+    # 建立基本 QuerySet
     articles = Article.objects.select_related("author").prefetch_related("tags")
-    # 透過render function將articles變數丟到"articles" template裡面，要渲染的畫面是"blog/article_list.html"，並且挾帶articles變數到"articles" template裡
-    return render(request, "blog/article_list.html", {"articles": articles})
+
+    # 根據搜尋關鍵字篩選標題
+    if search:
+        articles = articles.filter(title__icontains=search)
+
+    # 根據作者篩選
+    if author_id:
+        articles = articles.filter(author_id=author_id)
+
+    return render(
+        request, "blog/article_list.html", {"articles": articles, "search": search}
+    )
 
 
 # 原始處裡DoesNotExist問題寫法，需使用try-except
