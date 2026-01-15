@@ -62,8 +62,12 @@ def article_edit(request, article_id):
 
 def article_delete(request, article_id):
     article = get_object_or_404(Article, id=article_id)
-    article.delete()
-    return redirect("blog:article_list")
+
+    if request.method == "POST":
+        article.delete()
+        return redirect("blog:article_list")
+
+    return render(request, "blog/article_delete.html", {"article": article})
 
 
 def author_list(request):
