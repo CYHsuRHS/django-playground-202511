@@ -1,3 +1,5 @@
+from django.contrib import messages
+
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -44,6 +46,7 @@ def article_create(request):
     # 若驗證合法就直接存起來
     if form.is_valid():
         article = form.save()
+        messages.success(request, f"文章「{article.title}」已成功建立。")
         return redirect("blog:article_detail", article_id=article.id)
     # 若驗證不合法就直接render畫面
     return render(request, "blog/article_create.html", {"form": form})
@@ -55,6 +58,11 @@ def article_edit(request, article_id):
     form = ArticleForm(request.POST or None, instance=article)
     if form.is_valid():
         article = form.save()
+        messages.debug(request, f"文章「{article.title}」已成功更新。")
+        messages.info(request, f"文章「{article.title}」已成功更新。")
+        messages.warning(request, f"文章「{article.title}」已成功更新。")
+        messages.error(request, f"文章「{article.title}」已成功更新。")
+        messages.success(request, f"文章「{article.title}」已成功更新。")
         return redirect("blog:article_detail", article_id=article.id)
 
     return render(request, "blog/article_edit.html", {"form": form, "article": article})
@@ -65,6 +73,7 @@ def article_delete(request, article_id):
 
     if request.method == "POST":
         article.delete()
+        messages.success(request, f"文章「{article.title}」已成功刪除。")
         return redirect("blog:article_list")
 
     return render(request, "blog/article_delete.html", {"article": article})
