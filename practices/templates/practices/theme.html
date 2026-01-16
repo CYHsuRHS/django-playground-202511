@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="This is my first Django Template" />
+        <meta name="keywords" content="Django, Template, HTML" />
+        <title>主題設定</title>
+        <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        transition: all 0.3s;
+      }
+
+      /* 淺色主題 */
+      body.light {
+        background-color: #ffffff;
+        color: #333333;
+      }
+
+      /* 深色主題 */
+      body.dark {
+        background-color: #1a1a1a;
+        color: #f0f0f0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin-bottom: 30px;
+      }
+
+      .theme-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: 2px solid currentColor;
+        border-radius: 5px;
+        background-color: transparent;
+        color: inherit;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: currentColor;
+        color: white;
+      }
+
+      .current-theme {
+        padding: 15px;
+        border-left: 4px solid currentColor;
+        background-color: rgba(128, 128, 128, 0.1);
+      }
+        </style>
+    </head>
+    <body class="{{ theme }}">
+        <div class="container">
+            <h1>
+                主題設定
+            </h1>
+
+            <div class="theme-buttons">
+                <a href="?theme=light">
+                    <button>
+                        淺色主題
+                    </button>
+                </a>
+                <a href="?theme=dark">
+                    <button>
+                        深色主題
+                    </button>
+                </a>
+            </div>
+
+            <div class="current-theme">
+                <p>
+                    目前使用：<strong>{{ theme }}</strong> 主題
+                </p>
+                <p>
+                    你的偏好已儲存在 Cookie 中，下次訪問時會自動套用。
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

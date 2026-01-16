@@ -106,3 +106,24 @@ def cookie_counter(request):
     response.set_cookie("visit_count", str(visit_count))
 
     return response
+
+
+def theme_preference(request):
+    # 從 GET 參數讀取主題設定
+    theme = request.GET.get("theme")
+
+    # 從 Cookie 讀取目前的主題
+    current_theme = request.COOKIES.get("theme", "light")
+
+    # 如果有新的主題設定就更新
+    if theme:
+        current_theme = theme
+
+    # 建立回應
+    response = render(request, "practices/theme.html", {"theme": current_theme})
+
+    # 儲存主題設定到 Cookie
+    if theme:
+        response.set_cookie("theme", current_theme, max_age=365 * 24 * 60 * 60)
+
+    return response
