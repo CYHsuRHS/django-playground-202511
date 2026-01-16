@@ -19,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
 
     <script>
-        {% comment %} 撈取全部所指定的物件 {% endcomment %}
+        // 撈取全部所指定的物件
         document.querySelectorAll('select[multiple]').forEach((el) => {
             new TomSelect(el, {
                 plugins: ['remove_button'],
@@ -27,6 +27,37 @@
                 placeholder: '請選擇項目......',
             });
         });
+    </script>
+
+    <script>
+        /* // 處理批次刪除的全選
+        document.getElementById('select-all-article').addEventListener('change', function() {
+            // console.log('hihi') //由F12主控台可以看到選取變化時，得到hihi
+            // document.querySelectorAll('.article-checkbox') // 找全部的article-checkbox
+            document.querySelectorAll('.article-checkbox').forEach((checkbox) => {
+                checkbox.checked = this.checked
+            })
+        })*/
+        document.addEventListener('change', function (e) {
+
+            const selectAllCheckbox = document.getElementById('select-all-article')
+
+            // 點擊「全選」
+            if (e.target.id === 'select-all-article') {
+                document.querySelectorAll('.article-checkbox').forEach(cb => {
+                    cb.checked = e.target.checked
+                })
+                return
+            }
+
+            // 點擊任一文章 checkbox
+            if (e.target.classList.contains('article-checkbox')) {
+                const articleCheckboxes = document.querySelectorAll('.article-checkbox')
+                // console.log(articleCheckboxes)
+                const allChecked = Array.from(articleCheckboxes).every(cb => cb.checked)
+                selectAllCheckbox.checked = allChecked
+            }
+        })
     </script>
 {% endblock extra_scripts %}
 
@@ -56,17 +87,33 @@
             </form>
         </div>
     </div>
+    <form method="post" action="{% url "blog:article_bulk_delete" %}">
+        {% csrf_token %}
 
-    <div class="row">
-        {% comment %} filter.qs表經過過濾過後的資料 {% endcomment %}
-        {% for article in filter.qs %}
-            {% include "blog/components/article_card.html" %}
-        {% empty %}
-            <div class="col-12">
-                <div class="alert alert-info">
-                    沒有符合條件的文章
-                </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="select-all-article">
+                <label for="select-all-article">
+                    全選
+                </label>
             </div>
-        {% endfor %}
-    </div>
+
+            <button type="submit" class="btn btn-danger">
+                批次刪除
+            </button>
+        </div>
+
+        <div class="row">
+            {% comment %} filter.qs表經過過濾過後的資料 {% endcomment %}
+            {% for article in filter.qs %}
+                {% include "blog/components/article_card.html" with show_check_box=True %}
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        沒有符合條件的文章
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
 {% endblock blog_content %}

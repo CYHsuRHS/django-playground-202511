@@ -13,6 +13,9 @@ urlpatterns = [
     path(
         "articles/<int:article_id>/delete/", views.article_delete, name="article_delete"
     ),
+    path(
+        "articles/bulk-delete/", views.article_bulk_delete, name="article_bulk_delete"
+    ),
     path("authors/", views.author_list, name="author_list"),
     path("authors/<int:author_id>/", views.author_detail, name="author_detail"),
     path("tags/", views.tag_list, name="tag_list"),

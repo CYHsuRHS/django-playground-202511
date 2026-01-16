@@ -80,6 +80,56 @@ def article_delete(request, article_id):
     return render(request, "blog/article_delete.html", {"article": article})
 
 
+# def article_bulk_delete(request):
+#     if request.method == "POST":
+#         article_ids = request.POST.getlist("article_ids")
+#         if article_ids:
+#             # 如果article_ids有東西做的動作
+#             # in表示只要在丟給你的article_ids列表裡面都要找到
+#             # a = Article.objects.filter(id__in=article_ids)
+#             # print(a)
+#             # .delete()會回傳兩個東西給你
+#             # a, b = Article.objects.filter(id__in=article_ids).delete()
+#             # print(a) 會得到總共刪除幾篇文章
+#             # print(b) ['blog:Article':1]在各個model各刪多少,告知連帶刪除的東西
+#             # 知道有回傳值，但沒有要使用的參數，使用底線_接，這是python約定成俗的慣例
+#             deleted_count, _ = Article.objects.filter(id__in=article_ids).delete()
+#             messages.success(request, f"已成功刪除 {deleted_count} 篇文章")
+#         else:
+#             messages.warning(request, "請先選取至少一個要刪除的文章")
+#     return redirect("blog:article_list")
+def article_bulk_delete(request):
+    # 第一步：從列表頁送來 → 顯示確認頁
+    if request.method == "POST" and "confirm" not in request.POST:
+        article_ids = request.POST.getlist("article_ids")
+
+        if not article_ids:
+            messages.warning(request, "請先選取至少一個要刪除的文章")
+            return redirect("blog:article_list")
+
+        articles = Article.objects.filter(id__in=article_ids)
+
+        return render(
+            request,
+            "blog/article_bulk_delete.html",
+            {
+                "articles": articles,
+            },
+        )
+
+    # 第二步：確認頁送來 → 真正刪除
+    if request.method == "POST" and "confirm" in request.POST:
+        article_ids = request.POST.getlist("article_ids")
+
+        deleted_count, _ = Article.objects.filter(id__in=article_ids).delete()
+        messages.success(request, f"已成功刪除 {deleted_count} 篇文章")
+
+        return redirect("blog:article_list")
+
+    # 其他情況（例如直接 GET）
+    return redirect("blog:article_list")
+
+
 def author_list(request):
     authors = Author.objects.all()
     return render(request, "blog/author_list.html", {"authors": authors})
