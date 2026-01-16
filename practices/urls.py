@@ -26,4 +26,5 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("cookie-counter/", views.cookie_counter, name="cookie_counter"),
     path("theme/", views.theme_preference, name="theme_preference"),
+    path("cart/", views.shopping_cart, name="shopping_cart"),
 ]

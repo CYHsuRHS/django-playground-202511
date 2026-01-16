@@ -147,3 +147,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SHELL_PLUS_PRINT_SQL_TRUNCATE = None
 
 RUNSERVER_PLUS_PRINT_SQL_TRUNCATE = None
+
+# Auth
+# 登入完去哪裡
+LOGIN_REDIRECT_URL = "blog:article_list"
+# 沒登入要重新導向的登入畫面
+LOGIN_URL = "auth:login"

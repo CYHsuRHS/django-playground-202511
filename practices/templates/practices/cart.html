@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="This is my first Django Template" />
+        <meta name="keywords" content="Django, Template, HTML" />
+        <title>購物車</title>
+        <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      .product-btn {
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+      }
+
+      .product-btn:hover {
+        background-color: #0056b3;
+      }
+
+      .cart {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+      }
+
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .remove-btn {
+        background-color: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 14px;
+      }
+
+      .remove-btn:hover {
+        background-color: #c82333;
+      }
+
+      .clear-btn {
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+
+      .clear-btn:hover {
+        background-color: #5a6268;
+      }
+
+      .empty-cart {
+        color: #999;
+        text-align: center;
+        padding: 20px;
+      }
+        </style>
+    </head>
+    <body>
+        <h1>
+            購物車範例
+        </h1>
+
+        <h2>
+            商品列表
+        </h2>
+        <div class="products">
+            <a href="?action=add&product=蘋果" class="product-btn">加入 蘋果</a>
+            <a href="?action=add&product=香蕉" class="product-btn">加入 香蕉</a>
+            <a href="?action=add&product=橘子" class="product-btn">加入 橘子</a>
+            <a href="?action=add&product=葡萄" class="product-btn">加入 葡萄</a>
+        </div>
+
+        <h2>
+            購物車內容
+        </h2>
+        <div class="cart">
+            {% if cart %}
+                {% for product, quantity in cart.items %}
+                    <div class="cart-item">
+                        <span>{{ product }} x {{ quantity }}</span>
+                        <a href="?action=remove&product={{ product }}" class="remove-btn">移除</a>
+                    </div>
+                {% endfor %}
+                <a href="?action=clear" class="clear-btn">清空購物車</a>
+            {% else %}
+                <div class="empty-cart">
+                    購物車是空的
+                </div>
+            {% endif %}
+        </div>
+    </body>
+</html>

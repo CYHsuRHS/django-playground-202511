@@ -127,3 +127,32 @@ def theme_preference(request):
         response.set_cookie("theme", current_theme, max_age=365 * 24 * 60 * 60)
 
     return response
+
+
+def shopping_cart(request):
+    # 取得操作類型
+    action = request.GET.get("action")
+    product = request.GET.get("product")
+
+    # 從 Session 取得購物車, 如果沒有就建立空字典
+    cart = request.session.get("cart", {})
+
+    # 處理加入購物車
+    if action == "add" and product:
+        cart[product] = cart.get(product, 0) + 1
+        request.session["cart"] = cart
+
+    # 處理移除商品
+    elif action == "remove" and product:
+        if product in cart:
+            del cart[product]
+            request.session["cart"] = cart
+
+    # 處理清空購物車
+    elif action == "clear":
+        request.session["cart"] = {}
+
+    # 重新取得購物車, 可能已更新
+    cart = request.session.get("cart", {})
+
+    return render(request, "practices/cart.html", {"cart": cart})
