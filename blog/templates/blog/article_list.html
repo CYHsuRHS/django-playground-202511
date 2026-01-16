@@ -22,6 +22,7 @@
                 篩選條件
             </h5>
             <form method="get">
+                {% comment %} filter.form是最標準的Django form {% endcomment %}
                 {% bootstrap_form filter.form %}
 
                 <div class="d-flex gap-2">
@@ -33,6 +34,7 @@
     </div>
 
     <div class="row">
+        {% comment %} filter.qs表經過過濾過後的資料 {% endcomment %}
         {% for article in filter.qs %}
             {% include "blog/components/article_card.html" %}
         {% empty %}

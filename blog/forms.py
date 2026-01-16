@@ -8,11 +8,12 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article  # model的定義由Article來
         # fields = "__all__"  # 不管model有多少欄位，全部都要，但建議還是使用白名單寫法
-        fields = ["title", "content", "author"]  # 表單需要的欄位
+        fields = ["title", "content", "author", "tags"]  # 表單需要的欄位
         labels = {
             "title": "標題",
             "content": "內容",
             "author": "作者",
+            "tags": "標籤",
         }
         error_messages = {
             "title": {
@@ -23,8 +24,10 @@ class ArticleForm(forms.ModelForm):
                 "required": "內容不能空白",
             },
         }
+        # widgets決定欄位渲染時會長成什麼樣子,若tags數量太多時,則不適合使用CheckboxSelectMultiple,可使用第三方元件來解決這個問題
         widgets = {
             "content": forms.Textarea(attrs={"rows": 10}),
+            "tags": forms.CheckboxSelectMultiple(),
         }
 
     # 自訂驗證邏輯，可以覆寫 clean_<field_name> 方法

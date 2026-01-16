@@ -3,30 +3,20 @@ from django.contrib import messages
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
+from blog.filters import ArticleFilter
 from blog.forms import ArticleForm
 from blog.models import Article, Author, Tag
 
 
 # article_list(request)表示是一個function view
 def article_list(request):
-    # 從 GET 參數取得篩選條件
-    search = request.GET.get("search", "")
-    author_id = request.GET.get("author", "")
-
-    # 建立基本 QuerySet
-    articles = Article.objects.select_related("author").prefetch_related("tags")
-
-    # 根據搜尋關鍵字篩選標題
-    if search:
-        articles = articles.filter(title__icontains=search)
-
-    # 根據作者篩選
-    if author_id:
-        articles = articles.filter(author_id=author_id)
-
-    return render(
-        request, "blog/article_list.html", {"articles": articles, "search": search}
+    # 在python的世界裡filter這個名稱已經被內建的函式使用了，若命名為filter將會把其函式覆蓋
+    filter_ = ArticleFilter(
+        request.GET or None,  # 像初始化form的方式一樣初始化它
+        queryset=Article.objects.select_related("author").prefetch_related("tags"),
     )
+    # filter轉換到前端沒有使用底線
+    return render(request, "blog/article_list.html", {"filter": filter_})
 
 
 # 原始處裡DoesNotExist問題寫法，需使用try-except
