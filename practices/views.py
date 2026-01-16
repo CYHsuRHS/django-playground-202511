@@ -92,3 +92,17 @@ def contact(request):
         }
 
     return render(request, "practices/contact.html", context)
+
+
+def cookie_counter(request):
+    # 從 Cookie 讀取訪問次數
+    visit_count = request.COOKIES.get("visit_count", "0")
+    visit_count = int(visit_count) + 1
+
+    # 建立回應
+    response = HttpResponse(f"你已經訪問了 {visit_count} 次")
+
+    # 設定 Cookie
+    response.set_cookie("visit_count", str(visit_count))
+
+    return response
