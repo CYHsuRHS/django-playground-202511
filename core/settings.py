@@ -155,3 +155,9 @@ LOGIN_REDIRECT_URL = "blog:article_list"
 LOGIN_URL = "auth:login"
 # 登出後導到登入頁面
 LOGOUT_REDIRECT_URL = "auth:login"
+
+# Email
+# 使用file backend
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# 檔案被存放在當前資料夾下的sent_emails資料夾中
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"

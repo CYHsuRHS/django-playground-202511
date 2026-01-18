@@ -20,7 +20,7 @@ from django.contrib import admin
 
 # 把auth的views import進來並重新命名為auth_views
 from django.contrib.auth import views as auth_views
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 
 from core import views
 
@@ -33,12 +33,67 @@ auth_urlpatterns = [
         auth_views.LoginView.as_view(template_name="registration/login.html"),
         name="login",
     ),
+    # auth_views.LogoutView是Class-based views所以要用as_view轉成function view
     path(
         "logout/",
         auth_views.LogoutView.as_view(),
         name="logout",
     ),
+    # views.register是function view直接放入即可
     path("register/", views.register, name="register"),
+    # 使用PasswordChangeView使用as_view轉成function view
+    # success_url表示成功之後要被跳往的頁面
+    # 程式執行到success_url=reverse_lazy("auth:password_change_done"),時程式還沒載入完成，所以不能用reverse要使用reverse_lazy
+    path(
+        "password-change/",
+        auth_views.PasswordChangeView.as_view(
+            template_name="registration/password_change.html",
+            success_url=reverse_lazy("auth:password_change_done"),
+        ),
+        name="password_change",
+    ),
+    path(
+        "password-change/done/",
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name="registration/password_change_done.html"
+        ),
+        name="password_change_done",
+    ),
+    # 現在要要求一個密碼重設的信，所以會是一個輸入email的畫面
+    path(
+        "password-reset/",
+        auth_views.PasswordResetView.as_view(
+            template_name="registration/password_reset.html",
+            success_url=reverse_lazy("auth:password_reset_done"),
+        ),
+        name="password_reset",
+    ),
+    # reset請求已經被完成了，也就是提示使用者信件已經寄出
+    path(
+        "password-reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="registration/password_reset_done.html"
+        ),
+        name="password_reset_done",
+    ),
+    # password reset的路徑，<uidb64>表示userid經過base64的計算，表示密碼重設的url是屬於哪個user的
+    # <token>表示重設密碼的token
+    path(
+        "password-reset/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="registration/password_reset_confirm.html",
+            success_url=reverse_lazy("auth:password_reset_complete"),
+        ),
+        name="password_reset_confirm",
+    ),
+    # 重設密碼動作已完成
+    path(
+        "password-reset/complete/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="registration/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
+    ),
 ]
 
 urlpatterns = [

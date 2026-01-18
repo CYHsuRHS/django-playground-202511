@@ -8,6 +8,7 @@ def register(request):
     form = UserCreationForm(request.POST or None)
     if form.is_valid():
         user = form.save()
+        # 透過login強制轉成登入狀態
         login(request, user)
         messages.success(request, f"歡迎加入, {user.username}!")
         return redirect("blog:article_list")
