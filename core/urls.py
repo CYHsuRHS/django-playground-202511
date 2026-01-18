@@ -22,6 +22,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
+from core import views
+
 auth_urlpatterns = [
     # as_view表示將LoginView這個class轉換成function的view,在轉成view的同時template_name要使用"registration/login.html"這個template
     # 但template_name預設值就是"registration/login.html",所以auth_views.LoginView.as_view()也是可以正常運作
@@ -31,6 +33,12 @@ auth_urlpatterns = [
         auth_views.LoginView.as_view(template_name="registration/login.html"),
         name="login",
     ),
+    path(
+        "logout/",
+        auth_views.LogoutView.as_view(),
+        name="logout",
+    ),
+    path("register/", views.register, name="register"),
 ]
 
 urlpatterns = [
