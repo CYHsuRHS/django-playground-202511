@@ -1,5 +1,9 @@
 from django.contrib import messages
 
+# from django.contrib.auth.decorators import login_required
+# 沒登入不可能有權限，所以可使用permission_required替換login_required
+from django.contrib.auth.decorators import permission_required
+
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -41,6 +45,8 @@ def article_detail(request, article_id):
     return render(request, "blog/article_detail.html", {"article": article})
 
 
+# @login_required
+@permission_required("blog.add_article", raise_exception=True)
 def article_create(request):
     # request.POST如果有的話，就產生一個以request.POST為資料需要被驗證的表單，否則給一個None表完全乾淨的表單如同request.GET來建立一個form
     form = ArticleForm(request.POST or None)
@@ -53,6 +59,8 @@ def article_create(request):
     return render(request, "blog/article_create.html", {"form": form})
 
 
+# @login_required
+@permission_required("blog.change_article", raise_exception=True)
 def article_edit(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 使用者按下save時，並非建立全新的物件，而是更新instance
@@ -69,6 +77,8 @@ def article_edit(request, article_id):
     return render(request, "blog/article_edit.html", {"form": form, "article": article})
 
 
+# @login_required
+@permission_required("blog.delete_article", raise_exception=True)
 def article_delete(request, article_id):
     article = get_object_or_404(Article, id=article_id)
 
@@ -98,6 +108,10 @@ def article_delete(request, article_id):
 #         else:
 #             messages.warning(request, "請先選取至少一個要刪除的文章")
 #     return redirect("blog:article_list")
+
+
+# @login_required
+@permission_required("blog.delete_article", raise_exception=True)
 def article_bulk_delete(request):
     # 第一步：從列表頁送來 → 顯示確認頁
     if request.method == "POST" and "confirm" not in request.POST:

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    權限不足 - Django 大冒險
+{% endblock title %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-danger">
+                <h1 class="display-4">
+                    403
+                </h1>
+                <h4 class="alert-heading">
+                    權限不足
+                </h4>
+                <p>
+                    你沒有權限訪問這個頁面。
+                </p>
+                <hr />
+                <p class="mb-0">
+                    <a href="{% url 'blog:article_list' %}" class="btn btn-primary">回到首頁</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
