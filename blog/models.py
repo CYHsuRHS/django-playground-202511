@@ -22,6 +22,13 @@ class Tag(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
+    # ImageField是圖片檔案的資料
+    cover_image = models.ImageField(
+        # 檔案最後要被上傳到哪個路徑
+        upload_to="articles/covers/",
+        blank=True,
+        null=True,
+    )
     created_by = models.ForeignKey(
         # 關聯到它設定的User
         settings.AUTH_USER_MODEL,

@@ -9,6 +9,7 @@ dependencies = [
     "django-bootstrap5>=26.1",
     "django-extensions>=4.1",
     "django-filter>=25.2",
+    "pillow>=12.1.0",
 ]
 
 [dependency-groups]
