@@ -49,7 +49,7 @@ def article_detail(request, article_id):
 @permission_required("blog.add_article", raise_exception=True)
 def article_create(request):
     # request.POST如果有的話，就產生一個以request.POST為資料需要被驗證的表單，否則給一個None表完全乾淨的表單如同request.GET來建立一個form
-    form = ArticleForm(request.POST or None)
+    form = ArticleForm(request.POST or None, request.FILES or None)
     # 若驗證合法就直接存起來
     if form.is_valid():
         # 先以目前資料產生一個instance，阻止它存檔
@@ -71,7 +71,7 @@ def article_create(request):
 def article_edit(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 使用者按下save時，並非建立全新的物件，而是更新instance
-    form = ArticleForm(request.POST or None, instance=article)
+    form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
     if form.is_valid():
         article = form.save()
         messages.debug(request, f"文章「{article.title}」已成功更新。")

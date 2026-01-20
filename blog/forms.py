@@ -8,7 +8,7 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article  # model的定義由Article來
         # fields = "__all__"  # 不管model有多少欄位，全部都要，但建議還是使用白名單寫法
-        fields = ["title", "content", "author", "tags"]  # 表單需要的欄位
+        fields = ["title", "content", "author", "tags", "cover_image"]  # 表單需要的欄位
         labels = {
             "title": "標題",
             "content": "內容",
