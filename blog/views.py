@@ -52,7 +52,14 @@ def article_create(request):
     form = ArticleForm(request.POST or None)
     # 若驗證合法就直接存起來
     if form.is_valid():
-        article = form.save()
+        # 先以目前資料產生一個instance，阻止它存檔
+        article = form.save(commit=False)
+        # 設定created_by為request.user表當前登入的使用者
+        article.created_by = request.user
+        # 進行存檔
+        article.save()
+        # tags與article是多對多關係，所以要補.save_m2m()
+        form.save_m2m()
         messages.success(request, f"文章「{article.title}」已成功建立。")
         return redirect("blog:article_detail", article_id=article.id)
     # 若驗證不合法就直接render畫面

@@ -135,7 +135,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# 要存取靜態檔
 STATIC_URL = "static/"
+# 開發時靜態檔案放置路徑類似template path
+STATICFILES_DIRS = [BASE_DIR / "static"]
+# 最終檔案會被放置的地方
+STATIC_ROOT = BASE_DIR / "assets"
+
+# Media files (User uploads)
+
+# 要存取媒體檔
+MEDIA_URL = "media/"
+# 最終檔案會被放置的地方
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
