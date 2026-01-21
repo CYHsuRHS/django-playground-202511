@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.templatetags.static import static
 
+from blog.validators import validate_image_size
+
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -29,6 +31,7 @@ class Article(models.Model):
         upload_to="articles/covers/",
         blank=True,
         null=True,
+        validators=[validate_image_size],
     )
     created_by = models.ForeignKey(
         # 關聯到它設定的User
