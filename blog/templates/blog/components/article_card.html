@@ -16,6 +16,13 @@
                 </div>
             </div>
         {% endif %}
+        {% if article.cover_image %}
+            <img src="{{ article.cover_image.url }}"
+                 class="card-img-top"
+                 alt="{{ article.title }}"
+                 height="100%"
+                 width="100%">
+        {% endif %}
         <div class="card-body d-flex flex-column">
             <h5 class="card-title">
                 {{ article.title }}

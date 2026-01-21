@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.templatetags.static import static
 
 
 class Author(models.Model):
@@ -56,3 +57,9 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_cover_image_url(self):
+        if self.cover_image:
+            return self.cover_image.url
+        # 沒有上傳圖片時顯示設定的url路徑的圖片
+        return static("blog/images/default-cover.jpg")
