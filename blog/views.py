@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from blog.filters import ArticleFilter
 from blog.forms import ArticleForm
@@ -22,6 +22,25 @@ def article_list(request):
     )
     # filter轉換到前端沒有使用底線
     return render(request, "blog/article_list.html", {"filter": filter_})
+
+
+class ArticleListView(ListView):
+    queryset = Article.objects.select_related("author").prefetch_related("tags")
+
+    # 透過get_queryset與get_context_data將filter加回來
+    def get_queryset(self):
+        # super()的意思，如果有model就會是model.objcets.all()，如果沒有model就會直接拿queryset
+        queryset = super().get_queryset()
+        # queryset放進文章定義的filter裡面
+        self.filter = ArticleFilter(self.request.GET or None, queryset=queryset)
+        # 回傳filter的queryset
+        return self.filter.qs
+
+    # 要傳到template的data裡面額外給他filter
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = self.filter
+        return context
 
 
 # 原始處裡DoesNotExist問題寫法，需使用try-except
