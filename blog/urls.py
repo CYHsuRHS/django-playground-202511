@@ -18,7 +18,12 @@ urlpatterns = [
         views.ArticleDetailView.as_view(),
         name="article_detail",
     ),
-    path("articles/<int:article_id>/edit/", views.article_edit, name="article_edit"),
+    # path("articles/<int:article_id>/edit/", views.article_edit, name="article_edit"),
+    path(
+        "articles/<int:article_id>/edit/",
+        views.ArticleUpdateView.as_view(),
+        name="article_edit",
+    ),
     path(
         "articles/<int:article_id>/delete/", views.article_delete, name="article_delete"
     ),

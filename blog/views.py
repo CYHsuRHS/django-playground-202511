@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, DetailView  # , ListView
+from django.views.generic import CreateView, DetailView, UpdateView  # , ListView
 from django_filters.views import FilterView
 
 from blog.filters import ArticleFilter
@@ -143,6 +143,23 @@ def article_edit(request, article_id):
         return redirect("blog:article_detail", article_id=article.id)
 
     return render(request, "blog/article_edit.html", {"form": form, "article": article})
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = "blog/article_edit.html"
+    pk_url_kwarg = "article_id"
+
+    # 若不需要顯示messages，form_valid可以完全不寫
+    def form_valid(self, form):
+        self.object = form.save()
+        messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
+        return redirect(self.get_success_url())
+        # 也可以寫成下方這樣，下方的寫法比較好
+        # response = super().form_valid(form)
+        # messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
+        # return response
 
 
 # @login_required
