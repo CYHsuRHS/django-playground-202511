@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import DetailView  # , ListView
+from django.views.generic import CreateView, DetailView  # , ListView
 from django_filters.views import FilterView
 
 from blog.filters import ArticleFilter
@@ -97,6 +97,34 @@ def article_create(request):
         return redirect("blog:article_detail", article_id=article.id)
     # 若驗證不合法就直接render畫面
     return render(request, "blog/article_create.html", {"form": form})
+
+
+# from django.urls import reverse_lazy
+# from django.urls import reverse
+class ArticleCreateView(CreateView):
+    model = Article
+    form_class = ArticleForm
+    # 有model跟fields就可以長出form
+    # fields = ["title", "content", "author", "tags", "cover_image"]
+    # 指定模板名稱（預設是 blog/article_form.html，但我們使用 article_create.html）
+    template_name = "blog/article_create.html"
+    # success_url = reverse_lazy("blog:article_list")
+
+    # 如果合法就會呼叫form_valid
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.created_by = self.request.user
+        self.object.save()
+        form.save_m2m()
+        messages.success(self.request, f"文章「{self.object.title}」已成功建立。")
+        return redirect(self.get_success_url())
+
+    # 如果不合法就會呼叫form_invalid，因目前不合法沒有處理東西，所以不寫
+    # def form_invalid(self, form):
+    #     return super().form_invalid(form)
+
+    # def get_success_url(self):
+    #     return reverse("blog:article_detail", kwargs={"article_id": self.object.pk})
 
 
 # @login_required

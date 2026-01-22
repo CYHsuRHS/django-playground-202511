@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.templatetags.static import static
+from django.urls import reverse
 
 from blog.validators import (
     validate_image_dimensions,
@@ -69,6 +70,9 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("blog:article_detail", kwargs={"article_id": self.pk})
 
     def get_cover_image_url(self):
         if self.cover_image:
