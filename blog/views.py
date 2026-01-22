@@ -3,6 +3,7 @@ from django.contrib import messages
 # from django.contrib.auth.decorators import login_required
 # 沒登入不可能有權限，所以可使用permission_required替換login_required
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -107,7 +108,7 @@ def article_create(request):
 
 # from django.urls import reverse_lazy
 # from django.urls import reverse
-class ArticleCreateView(CreateView):
+class ArticleCreateView(PermissionRequiredMixin, CreateView):
     model = Article
     form_class = ArticleForm
     # 有model跟fields就可以長出form
@@ -115,6 +116,10 @@ class ArticleCreateView(CreateView):
     # 指定模板名稱（預設是 blog/article_form.html，但我們使用 article_create.html）
     template_name = "blog/article_create.html"
     # success_url = reverse_lazy("blog:article_list")
+    # 必須具備哪些權限
+    permission_required = "blog.add_article"
+    # 必須引法錯誤，而非直接導向登入頁面
+    raise_exception = True
 
     # 如果合法就會呼叫form_valid
     def form_valid(self, form):
@@ -151,11 +156,13 @@ def article_edit(request, article_id):
     return render(request, "blog/article_edit.html", {"form": form, "article": article})
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(PermissionRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
     template_name = "blog/article_edit.html"
     pk_url_kwarg = "article_id"
+    permission_required = "blog.change_article"
+    raise_exception = True
 
     # 若不需要顯示messages，form_valid可以完全不寫
     def form_valid(self, form):
@@ -181,11 +188,13 @@ def article_delete(request, article_id):
     return render(request, "blog/article_delete.html", {"article": article})
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
     model = Article
     template_name = "blog/article_delete.html"
     pk_url_kwarg = "article_id"
     success_url = reverse_lazy("blog:article_list")
+    permission_required = "blog.delete_article"
+    raise_exception = True
 
     def form_valid(self, form):
         messages.success(self.request, f"文章「{self.object.title}」已成功刪除。")
