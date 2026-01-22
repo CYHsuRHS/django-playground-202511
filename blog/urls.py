@@ -24,8 +24,11 @@ urlpatterns = [
         views.ArticleUpdateView.as_view(),
         name="article_edit",
     ),
+    # path("articles/<int:article_id>/delete/", views.article_delete, name="article_delete"),
     path(
-        "articles/<int:article_id>/delete/", views.article_delete, name="article_delete"
+        "articles/<int:article_id>/delete/",
+        views.ArticleDeleteView.as_view(),
+        name="article_delete",
     ),
     path(
         "articles/bulk-delete/", views.article_bulk_delete, name="article_bulk_delete"
