@@ -47,7 +47,8 @@ def article_detail(request, article_id):
 
 
 class ArticleDetailView(DetailView):
-    model = Article
+    # 若只寫model = Article，DetailView會自動將model = Article轉換為queryset = Article.objects.all()
+    queryset = Article.objects.select_related("author").prefetch_related("tags")
     pk_url_kwarg = "article_id"
 
 
