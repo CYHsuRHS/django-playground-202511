@@ -4,6 +4,7 @@ from django.contrib import messages
 # 沒登入不可能有權限，所以可使用permission_required替換login_required
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -108,7 +109,7 @@ def article_create(request):
 
 # from django.urls import reverse_lazy
 # from django.urls import reverse
-class ArticleCreateView(PermissionRequiredMixin, CreateView):
+class ArticleCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Article
     form_class = ArticleForm
     # 有model跟fields就可以長出form
@@ -120,15 +121,14 @@ class ArticleCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "blog.add_article"
     # 必須引法錯誤，而非直接導向登入頁面
     raise_exception = True
+    # SuccessMessageMixin是透過form_valid來觸發的
+    success_message = "文章「%(title)s」已成功建立。"
 
     # 如果合法就會呼叫form_valid
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.created_by = self.request.user
-        self.object.save()
-        form.save_m2m()
-        messages.success(self.request, f"文章「{self.object.title}」已成功建立。")
-        return redirect(self.get_success_url())
+        form.instance.created_by = self.request.user
+        # 如果沒有呼叫super()就不會觸發訊息發送
+        return super().form_valid(form)
 
     # 如果不合法就會呼叫form_invalid，因目前不合法沒有處理東西，所以不寫
     # def form_invalid(self, form):
@@ -156,23 +156,25 @@ def article_edit(request, article_id):
     return render(request, "blog/article_edit.html", {"form": form, "article": article})
 
 
-class ArticleUpdateView(PermissionRequiredMixin, UpdateView):
+class ArticleUpdateView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Article
     form_class = ArticleForm
     template_name = "blog/article_edit.html"
     pk_url_kwarg = "article_id"
     permission_required = "blog.change_article"
     raise_exception = True
+    # 格式化字串，只能使用表單有的clean data欄位
+    success_message = "文章「%(title)s」已成功更新。"
 
-    # 若不需要顯示messages，form_valid可以完全不寫
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
-        return redirect(self.get_success_url())
-        # 也可以寫成下方這樣，下方的寫法比較好
-        # response = super().form_valid(form)
-        # messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
-        # return response
+    # # 若不需要顯示messages，form_valid可以完全不寫
+    # def form_valid(self, form):
+    #     self.object = form.save()
+    #     messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
+    #     return redirect(self.get_success_url())
+    #     # 也可以寫成下方這樣，下方的寫法比較好
+    #     # response = super().form_valid(form)
+    #     # messages.success(self.request, f"文章「{self.object.title}」已成功更新。")
+    #     # return response
 
 
 # @login_required
@@ -188,7 +190,7 @@ def article_delete(request, article_id):
     return render(request, "blog/article_delete.html", {"article": article})
 
 
-class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
+class ArticleDeleteView(PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Article
     template_name = "blog/article_delete.html"
     pk_url_kwarg = "article_id"
@@ -196,10 +198,10 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = "blog.delete_article"
     raise_exception = True
 
-    def form_valid(self, form):
-        messages.success(self.request, f"文章「{self.object.title}」已成功刪除。")
-        self.object.delete()
-        return redirect(self.get_success_url())
+    # 因為DeleteView沒有表單，為了要讓他用POST送進來，裡面是一個空表單
+    # 所以最簡單的方式是覆寫get_success_message，其中self.object是View準備好的，會在真的刪除前，先撈到記憶體裡面
+    def get_success_message(self, cleaned_data):
+        return f"文章「{self.object.title}」已成功刪除。"
 
 
 # def article_bulk_delete(request):
