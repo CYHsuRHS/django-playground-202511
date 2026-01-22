@@ -1,9 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import TemplateView
+
+# def hello_world(request):
+#     return render(request, "practices/hello.html")
 
 
-def hello_world(request):
-    return render(request, "practices/hello.html")
+class HelloWorldView(TemplateView):
+    template_name = "practices/hello.html"
 
 
 def greeting(request):

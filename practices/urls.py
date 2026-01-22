@@ -1,11 +1,18 @@
 from django.urls import path
 
+# from django.views.generic import TemplateView
 from practices import views
 
 app_name = "practices"
 
 urlpatterns = [
-    path("hello/", views.hello_world, name="hello_world"),
+    # path("hello/", views.hello_world, name="hello_world"),
+    # path(
+    #     "hello/",
+    #     TemplateView.as_view(template_name="practices/hello.html"),
+    #     name="hello_world",
+    # ),
+    path("hello/", views.HelloWorldView.as_view(), name="hello_world"),
     path("greeting/", views.greeting, name="greeting"),
     path("search/", views.search, name="search"),
     path("products/", views.product_list, name="product_list"),

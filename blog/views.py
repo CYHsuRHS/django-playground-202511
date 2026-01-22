@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import permission_required
 
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import DetailView
 
 from blog.filters import ArticleFilter
 from blog.forms import ArticleForm
@@ -43,6 +44,11 @@ def article_detail(request, article_id):
     )
     print(article)  # 可用於debug，print結果會顯示於PowerShell
     return render(request, "blog/article_detail.html", {"article": article})
+
+
+class ArticleDetailView(DetailView):
+    model = Article
+    pk_url_kwarg = "article_id"
 
 
 # @login_required
