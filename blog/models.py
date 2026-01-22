@@ -2,7 +2,11 @@ from django.conf import settings
 from django.db import models
 from django.templatetags.static import static
 
-from blog.validators import validate_image_size
+from blog.validators import (
+    validate_image_dimensions,
+    validate_image_extension,
+    validate_image_size,
+)
 
 
 class Author(models.Model):
@@ -31,7 +35,12 @@ class Article(models.Model):
         upload_to="articles/covers/",
         blank=True,
         null=True,
-        validators=[validate_image_size],
+        validators=[
+            # 驗證發生的點都在python裡面，沒有下makemigrations與migrate亦可正常執行
+            validate_image_size,
+            validate_image_extension,
+            validate_image_dimensions,
+        ],
     )
     created_by = models.ForeignKey(
         # 關聯到它設定的User
