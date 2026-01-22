@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     # 本地 apps
     "practices",
     "blog",
+    # 工具 apps (必須放在最後)
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 if DEBUG:
