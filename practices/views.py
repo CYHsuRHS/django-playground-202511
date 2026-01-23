@@ -98,6 +98,29 @@ def contact(request):
     return render(request, "practices/contact.html", context)
 
 
+from django.views import View
+
+
+class ContactView(View):
+    def get(self, request):
+        context = {}
+        return render(request, "practices/contact.html", context)
+
+    def post(self, request):
+        name = request.POST.get("name", "")
+        email = request.POST.get("email", "")
+        message = request.POST.get("message", "")
+
+        context = {
+            "success": True,
+            "name": name,
+            "email": email,
+            "message": message,
+        }
+
+        return render(request, "practices/contact.html", context)
+
+
 def cookie_counter(request):
     # 從 Cookie 讀取訪問次數
     visit_count = request.COOKIES.get("visit_count", "0")
