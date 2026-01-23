@@ -1,0 +1,22 @@
+meta {
+  name: Article Partial Update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://127.0.0.1:8000/api-drf/blog/articles/26504
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "AAAA"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

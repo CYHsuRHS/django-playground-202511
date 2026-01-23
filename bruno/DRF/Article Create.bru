@@ -1,0 +1,27 @@
+meta {
+  name: Article Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://127.0.0.1:8000/api-drf/blog/articles
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Token ba32db20f639d1bfd7ff43db6e184822ec60fee6
+}
+
+body:json {
+  {
+    "title": "API",
+    "content": "DRF"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

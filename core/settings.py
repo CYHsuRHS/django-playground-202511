@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 第三方 apps
+    "rest_framework",
     "django_bootstrap5",
     "django_extensions",
     "django_filters",

@@ -107,6 +107,7 @@ urlpatterns = [
     # include auth_urlpatterns list進來並且把名字取成auth,(auth_urlpatterns, "auth")是一個tuple
     # 也可以不使用tuple寫include(auth_urlpatterns)程式也可以正常執行,只是include進來的東西不具有namespace,就需要煩惱有沒有人也取名叫login
     path("auth/", include((auth_urlpatterns, "auth"))),
+    path("api-drf/blog/", include("blog.drf_urls")),
 ]
 
 if settings.DEBUG:
