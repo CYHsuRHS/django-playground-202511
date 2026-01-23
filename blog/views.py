@@ -57,6 +57,13 @@ class ArticleListView(FilterView):
     filterset_class = ArticleFilter
     template_name = "blog/article_list.html"
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_staff:
+            return qs.filter(is_published=True)
+        # print(qs)
+        return qs
+
 
 # 原始處裡DoesNotExist問題寫法，需使用try-except
 # def article_detail(request, article_id):

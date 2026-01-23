@@ -22,6 +22,7 @@ from django.contrib import admin
 # 把auth的views import進來並重新命名為auth_views
 from django.contrib.auth import views as auth_views
 from django.urls import include, path, reverse_lazy
+from django.views.generic import RedirectView
 
 from core import views
 
@@ -98,6 +99,8 @@ auth_urlpatterns = [
 ]
 
 urlpatterns = [
+    # 使用者打http://127.0.0.1:8000/系統會自動導向至http://127.0.0.1:8000/blog/articles/
+    path("", RedirectView.as_view(pattern_name="blog:article_list"), name="root"),
     path("admin/", admin.site.urls),
     path("practices/", include("practices.urls")),
     path("blog/", include("blog.urls")),
