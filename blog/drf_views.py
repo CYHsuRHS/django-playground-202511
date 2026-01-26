@@ -23,15 +23,9 @@ class ArticleListAPIView(APIView):
         serializer = ArticleSerializer(data=request.data)
         # 若傳入的資料都是乾淨且可被使用
         if serializer.is_valid():
-            # 手動建立 Article 物件
-            article = Article.objects.create(
-                title=serializer.validated_data["title"],
-                content=serializer.validated_data["content"],
-                is_published=serializer.validated_data.get("is_published", False),
-                created_by=request.user,
-            )
-            output_serializer = ArticleSerializer(article)
-            return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+            # 呼叫save，序列化自己會判斷要呼叫新增或更新模式，如果只給data沒有instance代表沒有東西要更新，就會呼叫建立
+            serializer.save(created_by=request.user)  # save時還可以額外給created_by
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         # 若不合法要把serializer.errors告訴前端
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -56,23 +50,17 @@ class ArticleDetailAPIView(APIView):
 
     def put(self, request, pk):
         try:
+            # 先取得物件
             article = self.get_object(pk)
         except Article.DoesNotExist:
             return Response(
                 {"detail": "找不到該文章"}, status=status.HTTP_404_NOT_FOUND
             )
-        serializer = ArticleSerializer(data=request.data)
+        # 用序列化過濾使用者傳進來的資料request.data，額外給article這個instance
+        serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid():
-            # 手動更新 Article 物件
-            # 序列化的data是validated_data
-            article.title = serializer.validated_data["title"]
-            article.content = serializer.validated_data["content"]
-            article.is_published = serializer.validated_data.get(
-                "is_published", article.is_published
-            )
-            article.save()
-            output_serializer = ArticleSerializer(article)
-            return Response(output_serializer.data)
+            serializer.save()  # serializer有instance就會呼叫update的方法
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
