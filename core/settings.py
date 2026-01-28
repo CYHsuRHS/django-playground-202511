@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 第三方 apps
     "rest_framework",
+    "rest_framework.authtoken",
     "django_bootstrap5",
     "django_extensions",
     "django_filters",
@@ -176,3 +177,14 @@ LOGOUT_REDIRECT_URL = "auth:login"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 # 檔案被存放在當前資料夾下的sent_emails資料夾中
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+
+# DRF
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+}

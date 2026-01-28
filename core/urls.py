@@ -23,6 +23,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path, reverse_lazy
 from django.views.generic import RedirectView
+from rest_framework.authtoken.views import obtain_auth_token
 
 from core import views
 
@@ -108,6 +109,7 @@ urlpatterns = [
     # 也可以不使用tuple寫include(auth_urlpatterns)程式也可以正常執行,只是include進來的東西不具有namespace,就需要煩惱有沒有人也取名叫login
     path("auth/", include((auth_urlpatterns, "auth"))),
     path("api-drf/blog/", include("blog.drf_urls")),
+    path("api-drf/token", obtain_auth_token, name="api-token"),
 ]
 
 if settings.DEBUG:
