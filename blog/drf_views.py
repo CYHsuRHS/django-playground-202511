@@ -1,10 +1,10 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from blog.models import Article, Author
 from blog.serializers import ArticleSerializer, AuthorSerializer
 
 
-class ArticleListAPIView(ListCreateAPIView):
+class ArticleViewSet(ModelViewSet):
     """文章列表 API"""
 
     queryset = Article.objects.all()
@@ -16,22 +16,8 @@ class ArticleListAPIView(ListCreateAPIView):
         serializer.save(created_by=self.request.user)
 
 
-class ArticleDetailAPIView(RetrieveUpdateDestroyAPIView):
-    """文章詳情 API"""
-
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
-
-
-class AuthorListAPIView(ListCreateAPIView):
+class AuthorViewSet(ModelViewSet):
     """作者列表 API"""
-
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-
-class AuthorDetailAPIView(RetrieveUpdateDestroyAPIView):
-    """作者詳情 API"""
 
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer

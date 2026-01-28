@@ -1,23 +1,12 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
 from blog import drf_views
 
 app_name = "drf-blog"
 
-urlpatterns = [
-    # REST API設計URL慣例在資源後不加斜線
-    # path("articles", drf_views.article_list, name="article-list"),
-    path("articles", drf_views.ArticleListAPIView.as_view(), name="article-list"),
-    # path("articles/<int:pk>", drf_views.article_detail, name="article-detail"),
-    path(
-        "articles/<int:pk>",
-        drf_views.ArticleDetailAPIView.as_view(),
-        name="article-detail",
-    ),
-    path("authors", drf_views.AuthorListAPIView.as_view(), name="author-list"),
-    path(
-        "authors/<int:pk>",
-        drf_views.AuthorDetailAPIView.as_view(),
-        name="author-detail",
-    ),
-]
+# trailing_slash=False表示不要結尾的斜線
+router = DefaultRouter(trailing_slash=False)
+router.register("articles", drf_views.ArticleViewSet)
+router.register("authors", drf_views.AuthorViewSet)
+
+urlpatterns = router.urls
