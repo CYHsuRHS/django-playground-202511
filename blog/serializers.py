@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from blog.models import Article
+from blog.models import Article, Author
 
 # class ArticleSerializer(serializers.Serializer):
 # id = serializers.IntegerField(read_only=True)
@@ -39,3 +39,14 @@ class ArticleSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["created_by", "created_at", "updated_at"]
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = [
+            "name",
+            "email",
+            "created_at",
+        ]
+        read_only_fields = ["created_at"]

@@ -14,4 +14,5 @@ urlpatterns = [
         drf_views.ArticleDetailAPIView.as_view(),
         name="article-detail",
     ),
+    path("authors", drf_views.AuthorListAPIView.as_view(), name="author-list"),
 ]
