@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # 第三方 apps
     "rest_framework",
     "rest_framework.authtoken",
+    "drf_spectacular",
     "django_bootstrap5",
     "django_extensions",
     "django_filters",
@@ -187,4 +188,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# 設定 API 文件的基本資訊
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Blog API",
+    "DESCRIPTION": "Django 大冒險的部落格 API",
+    "VERSION": "1.0.0",
 }
