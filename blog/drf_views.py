@@ -1,3 +1,4 @@
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from blog.models import Article, Author
@@ -7,6 +8,8 @@ from blog.serializers import ArticleSerializer, AuthorSerializer
 class ArticleViewSet(ModelViewSet):
     """文章列表 API"""
 
+    # 代表只有這個ViewSet是使用這個permission，若沒有寫下面這行程式，就表示是使用setting.py設定的permission
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
