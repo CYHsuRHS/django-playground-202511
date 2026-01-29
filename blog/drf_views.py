@@ -1,6 +1,9 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.viewsets import ModelViewSet
 
+from blog.filters import ArticleFilter
 from blog.models import Article, Author
 from blog.serializers import ArticleSerializer, AuthorSerializer
 
@@ -12,6 +15,21 @@ class ArticleViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    # search_fields設定search時要到哪些欄位找
+    search_fields = ["title", "content"]
+    # ordering_fields設定哪些欄位允許排序
+    ordering_fields = ["created_at", "title"]
+    # 通常會先寫簡單的篩選
+    # filterset_fields = ["is_published", "author"]
+    # 也可以寫很複雜的
+    # filterset_fields = {
+    #     "title": ["exact", "icontains"],
+    #     "author": ["exact"],
+    #     "tags": ["exact"],
+    # }
+    # 有需求出現才會回頭寫filterset_class
+    filterset_class = ArticleFilter
 
     def perform_create(self, serializer):
         """在建立物件時設定 created_by"""
