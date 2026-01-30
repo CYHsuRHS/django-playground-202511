@@ -10,6 +10,7 @@ dependencies = [
     "django-cleanup>=9.0.0",
     "django-extensions>=4.1",
     "django-filter>=25.2",
+    "django-ninja>=1.5.3",
     "djangorestframework>=3.16.1",
     "drf-spectacular>=0.29.0",
     "pillow>=12.1.0",
