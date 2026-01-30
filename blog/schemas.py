@@ -1,20 +1,24 @@
-from datetime import datetime
+from ninja import ModelSchema
 
-from ninja import Schema
-
-
-class ArticleIn(Schema):
-    title: str
-    content: str
-    is_published: bool = False
+from blog.models import Article
 
 
-class ArticleOut(Schema):
-    id: int
-    title: str
-    content: str
-    is_published: bool
-    created_by_id: int
-    author_id: int | None
-    created_at: datetime
-    updated_at: datetime
+class ArticleIn(ModelSchema):
+    class Meta:
+        model = Article
+        fields = ["title", "content", "is_published"]
+
+
+class ArticleOut(ModelSchema):
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            "title",
+            "content",
+            "is_published",
+            "created_by",
+            "author",
+            "created_at",
+            "updated_at",
+        ]
