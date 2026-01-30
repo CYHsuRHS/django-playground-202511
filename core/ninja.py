@@ -1,9 +1,24 @@
 from ninja import NinjaAPI
+from ninja.security import HttpBearer
+from rest_framework.authtoken.models import Token
 
 from blog.ninja import router as blog_router
 
-# 實例化為api的變數
-api = NinjaAPI()
+
+# HttpBearer是一個傳遞token的方法
+class AuthBearer(HttpBearer):
+    def authenticate(self, request, token):
+        try:
+            # 以使用者傳進來的token到DRF的token裡面找，有沒有這個token，有找到它就是那個使用者的token
+            token_obj = Token.objects.get(key=token)
+        except Token.DoesNotExist:
+            return None  # 回傳None表認證失敗
+
+        return token_obj.user
+
+
+# 實例化為api的變數，auth=AuthBearer()表示所有API都要經過驗證
+api = NinjaAPI(auth=AuthBearer())
 api.add_router("/blog", blog_router, tags=["文章"])
 
 

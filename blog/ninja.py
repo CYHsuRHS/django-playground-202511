@@ -2,13 +2,13 @@ from django.shortcuts import get_object_or_404
 
 # Router需與API搭配才可使用
 from ninja import PatchDict, Router
-from ninja.security import django_auth
 
 from blog.models import Article
 from blog.schemas import ArticleIn, ArticleOut
 
 # Router(auth=django_auth)表示這個Router所有的路徑都要靠django_auth驗證
-router = Router(auth=django_auth)
+# router = Router(auth=django_auth)
+router = Router()
 
 
 # /articles的response格式會是list包著ArticleOut，可透過auth=None來覆蓋Router的驗證設定
@@ -31,7 +31,10 @@ def create_article(request, payload: ArticleIn):
     print(payload)
     print("===")
     # 使用.dict()轉換為python的dictionary，透過**語法把所有dictionary的值丟到create裡面，因為有做序列化，所以可以放心地做這件事
-    article = Article.objects.create(**payload.dict())
+    article = Article.objects.create(
+        **payload.dict(),
+        created_by=request.auth,
+    )
     return 201, article
 
 
