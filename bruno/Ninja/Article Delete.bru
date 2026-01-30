@@ -1,0 +1,22 @@
+meta {
+  name: Article Delete
+  type: http
+  seq: 6
+}
+
+delete {
+  url: http://127.0.0.1:8000/api-ninja/blog/articles/13
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "content": "Good Good"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
