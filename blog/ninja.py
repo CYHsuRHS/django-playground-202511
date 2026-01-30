@@ -1,38 +1,22 @@
+from django.shortcuts import get_object_or_404
+
 # Router需與API搭配才可使用
 from ninja import Router
 
 from blog.models import Article
+from blog.schemas import ArticleOut
 
 router = Router()
 
 
-# 這個router有一個get方法的API view路徑為/articles
-@router.get("/articles")
+# /articles的response格式會是list包著ArticleOut
+@router.get("/articles", response=list[ArticleOut])
 def list_articles(request):
-    # 所有Article的queryset
-    articles = Article.objects.all()
-    # 用for迴圈變成一個list，裡面有很多dictionary
-    return [
-        {
-            "id": article.id,
-            "title": article.title,
-            "content": article.content,
-            "is_published": article.is_published,
-            "created_at": article.created_at,
-        }
-        for article in articles
-    ]
+    # 已經知道回應格式是list包著ArticleOut就不需自己做處理了，直接把queryset給它，它知道schemas是什麼自己會想辦法處理
+    return Article.objects.all()
 
 
-# 因已指定article_id: int，故{article_id}只能出現數字
-@router.get("/articles/{article_id}")
+# response=ArticleOut表示只有一筆資料
+@router.get("/articles/{article_id}", response=ArticleOut)
 def get_article(request, article_id: int):
-    # 直接以id取得一篇文章
-    article = Article.objects.get(id=article_id)
-    return {
-        "id": article.id,
-        "title": article.title,
-        "content": article.content,
-        "is_published": article.is_published,
-        "created_at": article.created_at,
-    }
+    return get_object_or_404(Article, id=article_id)
