@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: http://127.0.0.1:8000/api-ninja/blog/articles?is_published=false&search=hello
+  url: http://127.0.0.1:8000/api-ninja/blog/articles?is_published=false&search=hello&ordering=-title
   body: none
   auth: inherit
 }
@@ -13,6 +13,8 @@ get {
 params:query {
   is_published: false
   search: hello
+  ordering: -title
+  ~ordering: title
   ~title__icontains: hello
   ~is_published: true
 }

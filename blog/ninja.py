@@ -1,3 +1,5 @@
+from typing import Literal
+
 from django.shortcuts import get_object_or_404
 
 # Router需與API搭配才可使用
@@ -15,8 +17,16 @@ router = Router()
 # /articles的response格式會是list包著ArticleOut，可透過auth=None來覆蓋Router的驗證設定
 @router.get("/articles", response=list[ArticleOut], auth=None)
 # Query[ArticleFilterSchema]有加上Query才知道是GET的參數，沒加Query預設是POST的參數
-def list_articles(request, filters: Query[ArticleFilterSchema]):
-    return filters.filter(Article.objects.all())
+def list_articles(
+    request,
+    filters: Query[ArticleFilterSchema],
+    ordering: Literal["created_at", "-created_at", "title", "-title"] | None = None,
+):
+    articles = filters.filter(Article.objects.all())
+    if ordering:
+        articles = articles.order_by(ordering)
+
+    return articles
 
 
 # response=ArticleOut表示只有一筆資料
