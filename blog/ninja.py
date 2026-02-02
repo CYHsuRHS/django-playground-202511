@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 
 # Router需與API搭配才可使用
 from ninja import PatchDict, Router
+from ninja.errors import HttpError
 
 from blog.models import Article
 from blog.schemas import ArticleIn, ArticleOut
@@ -27,6 +28,10 @@ def get_article(request, article_id: int):
 @router.post("/articles", response={201: ArticleOut})
 # payload參數型態若為ArticleIn，就會當作POST參數的一部份
 def create_article(request, payload: ArticleIn):
+    if not request.auth.has_perm("blog.add_article"):
+        # 狀態碼403表我知道你是誰，但你沒有權限做這件事
+        raise HttpError(403, "你沒有權限新增文章")
+
     print("===")
     print(payload)
     print("===")
@@ -41,6 +46,9 @@ def create_article(request, payload: ArticleIn):
 @router.put("/articles/{article_id}", response=ArticleOut)
 # 依照ArticleIn型態的請求做資料驗證
 def update_article(request, article_id: int, payload: ArticleIn):
+    if not request.auth.has_perm("blog.change_article"):
+        raise HttpError(403, "你沒有權限編輯文章")
+
     # 文章透過article_id做取得
     article = get_object_or_404(Article, id=article_id)
     for attr, value in payload.dict().items():
@@ -59,6 +67,9 @@ def partial_update_article(
     # 只要用PatchDict包起來，所有欄位都會變成選填
     payload: PatchDict[ArticleIn],
 ):
+    if not request.auth.has_perm("blog.change_article"):
+        raise HttpError(403, "你沒有權限編輯文章")
+
     article = get_object_or_404(Article, id=article_id)
     for attr, value in payload.items():
         setattr(article, attr, value)
@@ -69,6 +80,9 @@ def partial_update_article(
 
 @router.delete("/articles/{article_id}", response={204: None})
 def delete_article(request, article_id: int):
+    if not request.auth.has_perm("blog.delete_article"):
+        raise HttpError(403, "你沒有權限刪除文章")
+
     article = get_object_or_404(Article, id=article_id)
     article.delete()
     # 回應204狀態碼，None表沒有任何東西要回應
