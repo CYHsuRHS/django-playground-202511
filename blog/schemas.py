@@ -1,4 +1,4 @@
-from ninja import ModelSchema
+from ninja import FilterSchema, ModelSchema
 
 from blog.models import Article
 
@@ -22,3 +22,8 @@ class ArticleOut(ModelSchema):
             "created_at",
             "updated_at",
         ]
+
+
+class ArticleFilterSchema(FilterSchema):
+    is_published: bool | None = None
+    title__icontains: str | None = None
