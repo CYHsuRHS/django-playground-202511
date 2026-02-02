@@ -5,9 +5,16 @@ meta {
 }
 
 get {
-  url: http://127.0.0.1:8000/api-ninja/blog/articles
+  url: http://127.0.0.1:8000/api-ninja/blog/articles?is_published=false&search=hello
   body: none
   auth: inherit
+}
+
+params:query {
+  is_published: false
+  search: hello
+  ~title__icontains: hello
+  ~is_published: true
 }
 
 settings {

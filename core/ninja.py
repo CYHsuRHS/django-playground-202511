@@ -1,4 +1,4 @@
-from ninja import NinjaAPI
+from ninja import NinjaAPI  # , Redoc
 from ninja.security import HttpBearer
 from rest_framework.authtoken.models import Token
 
@@ -23,6 +23,7 @@ api = NinjaAPI(
     version="1.0.0",
     description="Django 大冒險的部落格 API (Django Ninja 版本)",
     auth=AuthBearer(),
+    # docs=Redoc(),
 )
 api.add_router("/blog", blog_router, tags=["文章"])
 

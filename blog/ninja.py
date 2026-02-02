@@ -14,6 +14,7 @@ router = Router()
 
 # /articles的response格式會是list包著ArticleOut，可透過auth=None來覆蓋Router的驗證設定
 @router.get("/articles", response=list[ArticleOut], auth=None)
+# Query[ArticleFilterSchema]有加上Query才知道是GET的參數，沒加Query預設是POST的參數
 def list_articles(request, filters: Query[ArticleFilterSchema]):
     return filters.filter(Article.objects.all())
 
@@ -23,6 +24,7 @@ def list_articles(request, filters: Query[ArticleFilterSchema]):
     "/articles/{article_id}",
     response=ArticleOut,
     auth=None,
+    # 有客製化需求，文件需要寫很清楚，需要額外補充，可以使用openapi_extra格式撰寫，風格要遵守openapi的格式
     openapi_extra={
         "responses": {
             404: {
