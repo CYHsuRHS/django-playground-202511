@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+# gettext_lazy as _ 表示gettext_lazy rename為底線，as代表rename，希望閱讀程式時不要被gettext_lazy干擾
+from django.utils.translation import gettext_lazy as _
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -62,6 +65,7 @@ if DEBUG:
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",  # 自動偵測瀏覽器偏好語系
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -128,7 +132,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "zh-hant"
+# LANGUAGE_CODE表示這個專案的預設語言
+LANGUAGE_CODE = "zh-hant"  # 會依照設定的語系調整整個網站
+
+# LANGUAGES表示目前專案支援哪些語言
+LANGUAGES = [
+    (
+        "zh-hant",
+        _("繁體中文"),
+    ),  # 表示將繁體中文當成參數丟到gettext_lazy中，不要使用底線亦可，直接寫gettext_lazy("繁體中文")
+    ("en", _("English")),
+]  # 若被gettext或gettext_lazy包起來，視為要被翻譯
+
+# 每個語言產生翻譯的檔案之放置路徑，project level的資料夾需要額外設定，app level它自己會去找
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 TIME_ZONE = "Asia/Taipei"
 
