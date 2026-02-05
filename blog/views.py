@@ -9,6 +9,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 # from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import (  # , ListView
     CreateView,
     DeleteView,
@@ -129,7 +131,7 @@ class ArticleCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView
     # 必須引法錯誤，而非直接導向登入頁面
     raise_exception = True
     # SuccessMessageMixin是透過form_valid來觸發的
-    success_message = "文章「%(title)s」已成功建立。"
+    success_message = _("文章「%(title)s」已成功建立。")
 
     # 如果合法就會呼叫form_valid
     def form_valid(self, form):
@@ -171,7 +173,7 @@ class ArticleUpdateView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView
     permission_required = "blog.change_article"
     raise_exception = True
     # 格式化字串，只能使用表單有的clean data欄位
-    success_message = "文章「%(title)s」已成功更新。"
+    success_message = _("文章「%(title)s」已成功更新。")
 
     # # 若不需要顯示messages，form_valid可以完全不寫
     # def form_valid(self, form):
@@ -208,7 +210,8 @@ class ArticleDeleteView(PermissionRequiredMixin, SuccessMessageMixin, DeleteView
     # 因為DeleteView沒有表單，為了要讓他用POST送進來，裡面是一個空表單
     # 所以最簡單的方式是覆寫get_success_message，其中self.object是View準備好的，會在真的刪除前，先撈到記憶體裡面
     def get_success_message(self, cleaned_data):
-        return f"文章「{self.object.title}」已成功刪除。"
+        # 是在method裡面，故不需使用gettext_lazy
+        return gettext("文章「%(title)s」已成功刪除。") % {"title": self.object.title}
 
 
 # def article_bulk_delete(request):
